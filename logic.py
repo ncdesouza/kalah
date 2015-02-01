@@ -1,4 +1,5 @@
-from kalah.rules import *
+from kalah import *
+import kalah
 
 
 def isGameOver(board):
@@ -23,14 +24,16 @@ def areStoresEmpty(board, pl1=None, pl2=None, p1_empty=True, p2_empty=True):
                 are empty, otherwise False
     """
     if pl1 is None and pl2 is None:
-        pl1 = toObject(0, board)
-        pl2 = toObject(7, board)
+        pl1 = kalah.toObject(0, board)
+        pl2 = kalah.toObject(7, board)
 
     if isHouse(pl1) or isHouse(pl2):
         return True
 
     if p1_empty or p2_empty:
-            return areStoresEmpty(board, getNext(pl1), getNext(pl2), isStoreEmpty(pl1), isStoreEmpty(pl2))
+            return areStoresEmpty(board, kalah.getNext(pl1),
+                                  kalah.getNext(pl2), kalah.isStoreEmpty(pl1),
+                                  kalah.isStoreEmpty(pl2))
     else:
         return False
 
@@ -58,20 +61,20 @@ def whoWon():
     pass
 
 
-def isLastSeed(piece):
-    """
-    isLastSeed():
-        checks if the seed being placed is the last one
-        in the selected store.
-    :param: piece: The piece that is passing the seed
-    :return: True if the seed being placed is last,
-                otherwise False.
-    """
-    def check(p):
-        def count(p):
-            return p.count_seeds()
-        return count(p) == 1
-    return check(piece)
+# def isLastSeed(piece):
+#     """
+#     isLastSeed():
+#         checks if the seed being placed is the last one
+#         in the selected store.
+#     :param: piece: The piece that is passing the seed
+#     :return: True if the seed being placed is last,
+#                 otherwise False.
+#     """
+#     def check(p):
+#         def count(p):
+#             return p.count_seeds()
+#         return count(p) == 1
+#     return check(piece)
 
 
 def isOwner(player, piece):
@@ -94,7 +97,7 @@ def isHouse(piece):
     :return: True if the piece is a home,
                 otherwise False
     """
-    return piece.type is HOUSE
+    return piece.type is kalah.HOUSE
 
 
 def isStore(piece):

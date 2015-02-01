@@ -1,5 +1,5 @@
-from kalah.rules import *
-from kalah.settings import *
+from kalah import *
+import kalah
 
 
 class Board:
@@ -10,9 +10,9 @@ class Board:
     def init_board(self, num_seeds):
         for i in range(14):
             if i < 7:
-                owner = PL_ONE
+                owner = kalah.PL_ONE
             else:
-                owner = PL_TWO
+                owner = kalah.PL_TWO
 
             if i is 6 or i is 13:
                 self.board.append(House(owner))
@@ -38,7 +38,7 @@ class Board:
             cur = self.board[i]
             next_property = self.toObject((i + 1) if i < 13 else 0)
             cur.setNext(next_property)
-            if cur.type is STORE:
+            if cur.type is kalah.STORE:
                 home = self.toObject(6 if i < 7 else 13)
                 across = self.toObject(calcAcross(i))
 
@@ -71,7 +71,7 @@ class Board:
         origin = self.toObject(store)
         num_seeds = self.numSeeds(origin)
 
-        transfer(origin, num_seeds)
+        transfer(origin)
 
 
     def print_board(self):
@@ -115,12 +115,12 @@ class Property:
 
 class House(Property):
     def __init__(self, owner):
-        Property.__init__(self, HOUSE, owner)
+        Property.__init__(self, kalah.HOUSE, owner)
 
 
 class Store(Property):
     def __init__(self, num_seeds, owner):
-        Property.__init__(self, STORE, owner)
+        Property.__init__(self, kalah.STORE, owner)
         self.across = None
         self.seeds = [Seed(self)] * num_seeds
 

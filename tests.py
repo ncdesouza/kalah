@@ -1,7 +1,5 @@
 import unittest
-from kalah.board import Board, Store, House
-from kalah.logic import *
-from kalah.rules import *
+from kalah import *
 
 
 class KalahTestCase(unittest.TestCase):
@@ -28,16 +26,28 @@ class KalahTestCase(unittest.TestCase):
             b = b.next
         self.assertEqual(b, self.board.board[1])
 
-    def test_transfer_seeds(self):
-        self.board.transfer_seeds(0, 1)
+    def test_transfer(self):
+        self.board = Board(3)
+        store = toObject(1, self.board)
+        transfer(store)
         self.assertEqual(self.board.board[1].count_seeds(), 0)
         self.assertEqual(self.board.board[2].count_seeds(), 4)
         self.assertEqual(self.board.board[3].count_seeds(), 4)
         self.assertEqual(self.board.board[3].count_seeds(), 4)
 
+    def test_transfer_seeds(self):
+        self.board = Board(3)
+        store = toObject(3, self.board)
+        transfer(store)
+        self.assertEqual(self.board.board[3].count_seeds(), 0)
+        self.assertEqual(self.board.board[4].count_seeds(), 4)
+        self.assertEqual(self.board.board[5].count_seeds(), 4)
+        self.assertEqual(self.board.board[6].count_seeds(), 1)
+
     def test_isStoreEmpty(self):
         self.board = Board(3)
-        self.board.transfer_seeds(0, 1)
+        store = toObject(1, self.board)
+        transfer(store)
         self.assertEqual(isStoreEmpty(toObject(1, self.board)), True)
         self.assertEqual(isStoreEmpty(toObject(2, self.board)), False)
 

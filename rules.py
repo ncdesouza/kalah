@@ -1,4 +1,4 @@
-from .settings import *
+from kalah import *
 
 
 def toObject(index, board):
@@ -23,20 +23,29 @@ def getNext(piece):
     return piece.next
 
 
-def transfer(player, piece):
-    def recurse(orig, count, dest=None):
-            def get_next(o):
-                d = o.next if dest is None else dest.next
-                if count is 1:
-                    return d
-                else:
-                    recurse(o, count - 1, d)
-                    return d
-            def put(o, d):
-                def get(o):
-                    return o.get_seed()
-                return d.put_seed(get(o))
-            return put(orig, get_next(orig))
+def transfer(piece):
+    def count(p):
+        return p.count_seeds()
+    num_seeds = count(piece)
+
+    def recurse(origin, dest=None, count=None):
+        def isLastSeed():
+            return count is 1
+        count = num_seeds if count is None else count
+        d = getNext(origin) if dest is None else getNext(dest)
+
+        def put(o, d):
+            def get(o):
+                return o.get_seed()
+            return d.put_seed((get(piece)))
+
+        if isLastSeed():
+            return put(piece, d)
+        else:
+            recurse(origin, d,  count - 1)
+            return put(piece, d)
+    return recurse(piece)
+
 
 
 # def bulk_transfer(dest):

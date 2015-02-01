@@ -1,5 +1,5 @@
-from . import board
-from . import logic
-from . import rules
-from . import settings
-from . import tests
+from kalah.board import Board, House, Store, Seed
+from kalah.logic import *
+from kalah.rules import *
+from kalah.settings import *
+from kalah.tests import KalahTestCase
