@@ -23,14 +23,32 @@ def getNext(piece):
     return piece.next
 
 
+def getAcross(piece):
+    """
+    getAcross():
+        this function will move from the piece to the piece
+        across from it.
+    :param piece: The piece you wish to move from
+    :return: An object of the piece across
+    """
+    return piece.across
+
+
 def transfer(piece):
+    """
+    transfer():
+        provides a method of transferring seeds from a location
+        to other locations
+    :param piece: the piece distributing the seeds
+    :return: None
+    """
     def count(p):
         return p.count_seeds()
     num_seeds = count(piece)
 
     def recurse(origin, dest=None, count=None):
         def isLastSeed():
-            return count is 1
+            return count == 1
         count = num_seeds if count is None else count
         d = getNext(origin) if dest is None else getNext(dest)
 
@@ -40,6 +58,7 @@ def transfer(piece):
             return d.put_seed((get(piece)))
 
         if isLastSeed():
+            checkSpecialMove(d)
             return put(piece, d)
         else:
             recurse(origin, d,  count - 1)
@@ -47,56 +66,26 @@ def transfer(piece):
     return recurse(piece)
 
 
+def bulkTransfer(piece):
+    def house(o):
+        return o.home
 
-# def bulk_transfer(dest):
-#     def house(o):
-#         return o.home
-#
-#     def across(o):
-#         return o.across
-#
-#     for x in range(self.numSeeds(dest)):
-#         transfer(dest, house(dest))
-#     store2 = across(dest)
-#     for x in range(self.numSeeds(store2)):
-#         transfer(store2, house(dest))
+    def across(o):
+        return o.across
+
+    def count(o):
+        return o.count_seeds()
+
+    def transfer(o):
+        def put(o):
+            def get(o):
+                return o.get_seed()
+            return house(o).put_seed(get(o))
+
+    for x in range((count(piece))):
+        transfer(piece)
+
+    for x in range(count(across(piece))):
+        transfer(across(piece))
 
 
-
-# destination = self.toObject(store + i)
-        #
-        #     # On the last seed transfer
-        # if i is num_seeds:
-        #     # check if player owns the property
-        #     if checkOwner(destination):
-        #         # check to see if its a house
-        #         if destination.type is HOUSE:
-        #             # put the seed in the house
-        #             transfer(origin)
-        #             # signal another turn
-        #             return player
-        #         # check to see if its a store
-        #         if destination.type is STORE:
-        #             # check to see if the number of seeds is 0
-        #             if destination.count_seeds() is 0:
-        #                 # check to see if the across store has any seeds
-        #                 if destination.across.count_seeds() > 0:
-        #                     # first transfer seed
-        #                     transfer(origin)
-        #                     # transfer all seeds from destination and it's across to home
-        #                     bulk_transfer(destination)
-        #                 else:
-        #                     # regular transfer
-        #                     destination.put_seed(self.board[store].get_seed())
-        #                     return 0 if player is 0 else 1
-        #             else:
-        #                 destination.put_seed(self.board[store].get_seed())
-        #                 return 0 if player is 0 else 1
-        #         else:
-        #             destination.put_seed(self.board[store].get_seed())
-        #             return 0 if player is 0 else 1
-        #     else:
-        #         destination.put_seed(self.board[store].get_seed())
-        #         return 0 if player is 0 else 1
-        # else:
-            # destination.put_seed(self.board[store].get_seed())

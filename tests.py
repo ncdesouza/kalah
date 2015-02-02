@@ -57,9 +57,31 @@ class KalahTestCase(unittest.TestCase):
         self.board = Board(3)
         self.assertEqual(areStoresEmpty(self.board), False)
 
-    def test_isLastPiece(self):
+    def test_isLastSeed(self):
         store1 = Store(3, 1)
         store2 = Store(0, 1)
+
+    def test_checkAcross(self):
+        self.board = Board(0)
+        piece1 = toObject(12, self.board)
+        self.assertEquals(checkAcross(piece1), 0)
+        piece2 = toObject(0, self.board)
+        piece2.seeds.append(Seed(piece2))
+        self.assertEquals(checkAcross(piece1), (len(piece2.seeds) > 0))
+
+    def test_bulkTransfer(self):
+        self.board = Board(3)
+        piece1 = toObject(3, self.board)
+        transfer(piece1)
+        self.board.print_board()
+        self.assertEquals(piece1.count_seeds(), 0)
+        piece1 = toObject(0, self.board)
+        transfer(piece1)
+        self.assertEqual(piece1.count_seeds(), 0)
+        piece1 = getNext(getNext(getNext(piece1))).count_seeds()
+        self.board.print_board()
+        self.assertEqual(piece1, 0)
+        self.assertEqual(getAcross(piece1).count_seeds(), 0)
 
 
 def suite():

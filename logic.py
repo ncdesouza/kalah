@@ -61,23 +61,44 @@ def whoWon():
     pass
 
 
-# def isLastSeed(piece):
-#     """
-#     isLastSeed():
-#         checks if the seed being placed is the last one
-#         in the selected store.
-#     :param: piece: The piece that is passing the seed
-#     :return: True if the seed being placed is last,
-#                 otherwise False.
-#     """
-#     def check(p):
-#         def count(p):
-#             return p.count_seeds()
-#         return count(p) == 1
-#     return check(piece)
+def checkSpecialMove(piece, turn=0):
+    """
+    checkSpecialMove():
+        This function checks whether the move qualifies
+        for any special treatment.
+    :return:
+    """
+    if isHouse(piece):
+        return kalah.PL_ONE if turn is kalah.PL_ONE else kalah.PL_TWO
+    # check if the piece is a store, who owns it and if it has pieces across
+    if isStore(piece):
+        if isOwner(turn, piece):
+            if checkAcross(piece):
+                if isStoreEmpty(piece):
+                    # transfer all seeds in the house and the house across to the
+                    # players home who's turn it is
+                    kalah.bulkTransfer(piece)
 
 
-def isOwner(player, piece):
+def checkAcross(piece):
+    """
+    checkAdjacent(piece):
+        checks if the piece across from it has
+        any seeds in it
+
+    :param piece: The store across from
+    :return: True if the piece has seeds,
+                otherwise False
+    """
+    def check(p):
+        def count(p):
+            return kalah.getAcross(p).count_seeds()
+        return True if count(p) > 0 else False
+    return check(piece)
+
+
+
+def isOwner(turn, piece):
     """
     isOwner():
         checks if the player owns the piece
@@ -86,7 +107,9 @@ def isOwner(player, piece):
     :return: True if player owns the piece,
                 otherwise False
     """
-    pass
+    def comp(p):
+        return piece.owner == turn
+    return comp(piece)
 
 
 def isHouse(piece):
@@ -97,7 +120,9 @@ def isHouse(piece):
     :return: True if the piece is a home,
                 otherwise False
     """
-    return piece.type is kalah.HOUSE
+    def comp(p):
+        return piece.type == kalah.HOUSE
+    return True if comp(piece) else False
 
 
 def isStore(piece):
@@ -108,4 +133,4 @@ def isStore(piece):
     :return: True if the piece is a store,
                 otherwise False
     """
-    pass
+    return True if piece.type == kalah.STORE else False
