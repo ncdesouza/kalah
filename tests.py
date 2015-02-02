@@ -1,4 +1,5 @@
 import unittest
+
 from kalah import *
 
 
@@ -57,10 +58,6 @@ class KalahTestCase(unittest.TestCase):
         self.board = Board(3)
         self.assertEqual(areStoresEmpty(self.board), False)
 
-    def test_isLastSeed(self):
-        store1 = Store(3, 1)
-        store2 = Store(0, 1)
-
     def test_checkAcross(self):
         self.board = Board(0)
         piece1 = toObject(12, self.board)
@@ -78,10 +75,25 @@ class KalahTestCase(unittest.TestCase):
         piece1 = toObject(0, self.board)
         transfer(piece1)
         self.assertEqual(piece1.count_seeds(), 0)
-        piece1 = getNext(getNext(getNext(piece1))).count_seeds()
+        piece1 = getNext(getNext(getNext(piece1)))
         self.board.print_board()
-        self.assertEqual(piece1, 0)
-        self.assertEqual(getAcross(piece1).count_seeds(), 0)
+        self.assertEqual(piece1.count_seeds(), 0)
+        self.assertEqual(((getAcross(piece1)).count_seeds()), 0)
+
+    def test_bulkTransfer2(self):
+        self.board = Board(3)
+        piece1 = toObject(10, self.board)
+        transfer(piece1)
+        self.board.print_board()
+        self.assertEquals(piece1.count_seeds(), 0)
+        piece1 = toObject(7, self.board)
+        transfer(piece1)
+        self.assertEqual(piece1.count_seeds(), 0)
+        piece1 = getNext(getNext(getNext(piece1)))
+        self.board.print_board()
+        self.assertEqual(piece1.count_seeds(), 0)
+        self.assertEqual(((getAcross(piece1)).count_seeds()), 0)
+
 
 
 def suite():

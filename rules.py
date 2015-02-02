@@ -1,6 +1,21 @@
 from kalah import *
 
 
+def calcAcross(index):
+    def multi(i):
+        def under(i):
+            return 6 - i
+
+        def over(i):
+            return i - 6
+
+        if i < 6:
+            return 2 * under(i)
+        else:
+            return -2 * over(i)
+
+    return index + multi(index)
+
 def toObject(index, board):
     """
     toObject():
@@ -26,8 +41,7 @@ def getNext(piece):
 def getAcross(piece):
     """
     getAcross():
-        this function will move from the piece to the piece
-        across from it.
+        this function will move to the piece across from it.
     :param piece: The piece you wish to move from
     :return: An object of the piece across
     """
@@ -58,8 +72,9 @@ def transfer(piece):
             return d.put_seed((get(piece)))
 
         if isLastSeed():
+            put(piece, d)
             checkSpecialMove(d)
-            return put(piece, d)
+
         else:
             recurse(origin, d,  count - 1)
             return put(piece, d)
@@ -76,16 +91,23 @@ def bulkTransfer(piece):
     def count(o):
         return o.count_seeds()
 
-    def transfer(o):
-        def put(o):
+    def transfer(o, dest=None):
+        d = o if dest is None else dest
+
+        def put(d):
             def get(o):
                 return o.get_seed()
-            return house(o).put_seed(get(o))
 
-    for x in range((count(piece))):
+            return house(d).put_seed(get(o))
+
+        return put(d)
+
+    c = count(piece)
+    for x in range(c):
         transfer(piece)
 
-    for x in range(count(across(piece))):
-        transfer(across(piece))
+    c = count(across(piece))
+    for x in range(c):
+        transfer(across(piece), piece)
 
 

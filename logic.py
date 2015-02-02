@@ -38,7 +38,7 @@ def areStoresEmpty(board, pl1=None, pl2=None, p1_empty=True, p2_empty=True):
         return False
 
 
-def isStoreEmpty(store):
+def isStoreEmpty(store, was=False):
     """
     isStoreEmpty():
         checks if a single store is empty
@@ -48,7 +48,8 @@ def isStoreEmpty(store):
     def compare(s):
         def count(s):
             return s.count_seeds()
-        return count(s) == 0
+
+        return count(s) == 0 if not was else 1
     return compare(store)
 
 
@@ -74,7 +75,7 @@ def checkSpecialMove(piece, turn=0):
     if isStore(piece):
         if isOwner(turn, piece):
             if checkAcross(piece):
-                if isStoreEmpty(piece):
+                if isStoreEmpty(piece, True):
                     # transfer all seeds in the house and the house across to the
                     # players home who's turn it is
                     kalah.bulkTransfer(piece)
