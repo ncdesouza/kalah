@@ -59,7 +59,7 @@ class Kalah:
                 self.me = self.turn
                 print("Player " + str(self.turn) + "'s turn")
                 print("Actual:" + str(self.me))
-
+        isGameOver(self.board)
         self.board.draw_board(self.screen)
 
         pygame.display.update()

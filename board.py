@@ -1,6 +1,4 @@
-import pygame
-
-from settings import *
+from logic import *
 
 
 class Board:
