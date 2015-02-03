@@ -1,10 +1,8 @@
-import pygame
 import sys
 
 from pygame.constants import QUIT
 
-from kalah import *
-import kalah
+from board import *
 
 
 class Kalah:
@@ -14,11 +12,12 @@ class Kalah:
         self.board = Board(kalah.NUM_SEEDS)
 
     def update(self):
+        self.screen.fill(0)
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit(0)
-
+        self.board.draw_board(self.screen)
         pygame.display.update()
 
 
