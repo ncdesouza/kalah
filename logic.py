@@ -49,7 +49,7 @@ def isStoreEmpty(store, was=False):
         def count(s):
             return s.count_seeds()
 
-        return 0 == count(s) if not was else 1
+        return count(s) == (0 if not was else 1)
     return compare(store)
 
 
@@ -74,7 +74,9 @@ def checkSpecialMove(piece, player=1):
     # check if the piece is a store, who owns it and if it has pieces across
     if isStore(piece):
         if isOwner(player, piece):
-            if isStoreEmpty(piece.get_next()):
+            test = isStoreEmpty(piece.get_across())
+            if not isStoreEmpty(piece.get_across()):
+                test = isStoreEmpty(piece, True)
                 if isStoreEmpty(piece, True):
                     # transfer all seeds in the house and the house across to the
                     # players home who's turn it is

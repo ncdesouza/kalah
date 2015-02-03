@@ -65,6 +65,7 @@ class Property:
         self.height = height
         self.x = x
         self.y = y
+        self.colour = LIME if owner is PL_ONE else RED
         self.type = type
         self.owner = owner
         self.next = None
@@ -87,6 +88,9 @@ class Property:
 
     def set_next(self, next_store):
         self.next = next_store
+
+    def get_type(self):
+        return self.type
 
     def get_owner(self):
         return self.owner
@@ -117,7 +121,7 @@ class Property:
 
             return calc(self.x), calc(self.y)
 
-        pygame.draw.rect(screen, LIME, pygame.Rect(self.get_rect()))
+        pygame.draw.rect(screen, self.colour, pygame.Rect(self.get_rect()))
         pygame.draw.rect(screen, BLACK, pygame.Rect(inner_rect()))
         font = pygame.font.Font(None, 25)
         text = font.render("{0}".format(self.count_seeds()), True, WHITE)
@@ -139,20 +143,26 @@ class Store(Property):
     def set_across(self, store):
         self.across = store
 
+    def get_across(self):
+        return self.across
+
     def set_home(self, home):
         self.home = home
 
     def get_seed(self):
         return self.seeds.pop()
 
-    def move_seeds(self, turn, destination=False):
+    def move_seeds(self, player, destination=False):
         count = self.count_seeds()
         nxt = self.get_next() if not destination else destination.get_next()
+        if isHouse(nxt) and not isOwner(player, nxt):
+            return self.move_seeds(player, nxt)
+
         nxt.put_seed(self.get_seed())
         if count == 1:
-            next_turn = checkSpecialMove(nxt, turn)
+            next_turn = checkSpecialMove(nxt, player)
             return PL_ONE if next_turn is PL_ONE else PL_TWO
-        return self.move_seeds(turn, nxt)
+        return self.move_seeds(player, nxt)
 
 
 class Seed():

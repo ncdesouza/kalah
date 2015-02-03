@@ -1,8 +1,6 @@
 import unittest
 
-from kalah import toObject
-
-from logic import *
+from board import *
 
 
 class KalahTestCase(unittest.TestCase):
@@ -14,91 +12,64 @@ class KalahTestCase(unittest.TestCase):
 
     def test_across(self):
         self.assertEqual(self.board.board[0].across, self.board.board[12],
-                         'across reference does not match')
+                         'across reference does not match from p1')
+        self.assertEqual(self.board.board[10].across, self.board.board[2],
+                         'across reference does not match from p2')
 
-    @unittest.skip("New implementation")
-    def test_next(self):
-        i = 1
-        for b in self.board.board:
-            self.assertEqual(b.next, self.board.board[i])
-            i = 0 if i is 13 else (i + 1)
 
-    def test_nav(self):
-        n = 15
-        b = self.board.board[0]
-        for i in range(n):
-            b = b.next
-        self.assertEqual(b, self.board.board[1])
+    def test_get_next(self):
+        self.assertEquals(self.board.board[0].get_next(), self.board.board[1])
 
-    def test_transfer(self):
-        self.board = Board(3)
-        store = toObject(1, self.board)
-        transfer(store)
-        self.assertEqual(self.board.board[1].count_seeds(), 0)
-        self.assertEqual(self.board.board[2].count_seeds(), 4)
-        self.assertEqual(self.board.board[3].count_seeds(), 4)
-        self.assertEqual(self.board.board[3].count_seeds(), 4)
+    def test_another_turn(self):
+        turn = self.board.board[3].move_seeds(0)
+        self.assertEquals(turn, 0)
 
-    def test_transfer_seeds(self):
-        self.board = Board(3)
-        store = toObject(3, self.board)
-        transfer(store)
-        self.assertEqual(self.board.board[3].count_seeds(), 0)
-        self.assertEqual(self.board.board[4].count_seeds(), 4)
-        self.assertEqual(self.board.board[5].count_seeds(), 4)
-        self.assertEqual(self.board.board[6].count_seeds(), 1)
-
-    def test_isStoreEmpty(self):
-        self.board = Board(3)
-        store = toObject(1, self.board)
-        transfer(store)
-        self.assertEqual(isStoreEmpty(toObject(1, self.board)), True)
-        self.assertEqual(isStoreEmpty(toObject(2, self.board)), False)
-
-    def test_areStoresEmpty(self):
-        self.board = Board(0)
-        self.assertEqual(areStoresEmpty(self.board), True)
-        self.board = Board(3)
-        self.assertEqual(areStoresEmpty(self.board), False)
-
-    def test_checkAcross(self):
-        self.board = Board(0)
-        piece1 = toObject(12, self.board)
-        self.assertEquals(checkAcross(piece1), 0)
-        piece2 = toObject(0, self.board)
-        piece2.seeds.append(Seed(piece2))
-        self.assertEquals(checkAcross(piece1), (len(piece2.seeds) > 0))
-
-    def test_bulkTransfer(self):
-        self.board = Board(3)
-        piece1 = toObject(3, self.board)
-        transfer(piece1)
+    def test_bulk_transfer_p1(self):
+        print("Bulk Transfer P1 Test")
         self.board.print_board()
-        self.assertEquals(piece1.count_seeds(), 0)
-        piece1 = toObject(0, self.board)
-        transfer(piece1)
-        self.assertEqual(piece1.count_seeds(), 0)
-        piece1 = getNext(getNext(getNext(piece1)))
+        self.board.board[3].move_seeds(0)
+        self.board.board[0].move_seeds(0)
         self.board.print_board()
-        self.assertEqual(piece1.count_seeds(), 0)
-        self.assertEqual(((getAcross(piece1)).count_seeds()), 0)
-
-    def test_bulkTransfer2(self):
-        self.board = Board(3)
-        piece1 = toObject(10, self.board)
-        piece1.move_seeds()
+        self.assertEquals(self.board.board[3].count_seeds(), 0)
         self.board.print_board()
-        self.assertEquals(piece1.count_seeds(), 0)
-        piece1 = toObject(7, self.board)
-        piece1.move_seeds()
-        self.assertEqual(piece1.count_seeds(), 0)
-        piece1 = getNext(getNext(getNext(piece1)))
+        self.assertEquals((self.board.board[3].get_across()).count_seeds(), 0)
+
+    def test_bulk_transfer_p2(self):
+        print("Bulk Transfer P2 Test")
         self.board.print_board()
-        self.assertEqual(piece1.count_seeds(), 0)
-        self.assertEqual(((getAcross(piece1)).count_seeds()), 0)
+        self.board.board[10].move_seeds(1)
+        self.board.print_board()
+        self.board.board[7].move_seeds(1)
+        self.board.print_board()
+        self.assertEqual(self.board.board[10].count_seeds(), 0)
+        self.assertEqual((self.board.board[10].get_across()).count_seeds(), 0)
+
+    def test_regular_gameplay(self):
+        print("Skip Opponents Home Test")
+        self.board.print_board()
+        self.board.board[0].move_seeds(0)
+        self.board.board[1].move_seeds(0)
+        self.board.print_board()
+        self.board.board[2].move_seeds(0)
+        self.board.print_board()
+        self.board.board[3].move_seeds(0)
+        self.board.print_board()
+        self.board.board[4].move_seeds(0)
+        self.board.print_board()
+        self.board.board[5].move_seeds(0)
+        self.board.print_board()
 
 
+    def test_skip_opponents_home(self):
+        self.board.print_board()
+        for i in range(7):
+            self.board.board[5].seeds.append(Seed(self.board.board[6]))
+        self.board.print_board()
+        self.board.board[5].move_seeds(0)
+        self.board.print_board()
+        self.assertEqual(self.board.board[13].count_seeds(), 0)
 
+    def test_opponent_skip_my_home(self):
 def suite():
     suite = unittest.makeSuite(KalahTestCase, 'test')
     return suite

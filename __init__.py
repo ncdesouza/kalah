@@ -1,3 +1,4 @@
+import kalah
 from kalah.board import Board, House, Store, Seed
 from kalah.logic import *
 from kalah.rules import *

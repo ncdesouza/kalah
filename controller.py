@@ -51,9 +51,11 @@ class Kalah:
                     if self.me is PL_ONE and not isStoreEmpty(self.board.board[5]):
                         self.turn = self.board.board[5].move_seeds(PL_ONE)
                     if self.me is PL_TWO and not isStoreEmpty(self.board.board[7]):
-                        self.turn = self.board.board[7].move_seeds(PL_ONE)
-        print(self.turn)
-        self.me = self.turn
+                        self.turn = self.board.board[7].move_seeds(PL_TWO)
+                self.me = self.turn
+                print(self.turn)
+
+
 
         self.board.draw_board(self.screen)
 
