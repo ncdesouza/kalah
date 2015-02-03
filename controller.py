@@ -1,8 +1,9 @@
 import sys
+import pygame
 
 from pygame.constants import QUIT
 
-from board import *
+from kalah import *
 
 
 class Kalah:

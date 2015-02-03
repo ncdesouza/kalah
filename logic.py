@@ -50,11 +50,13 @@ def isStoreEmpty(store, was=False):
     :param store: The store object
     :return: True if empty, otherwise False
     """
+
     def compare(s):
         def count(s):
             return s.count()
 
         return count(s) == (0 if not was else 1)
+
     return compare(store)
 
 
@@ -89,8 +91,6 @@ def checkSpecialMove(piece, player=1):
     return PL_ONE if player is PL_TWO else PL_TWO
 
 
-
-
 def isOwner(turn, piece):
     """
     isOwner():
@@ -100,8 +100,10 @@ def isOwner(turn, piece):
     :return: True if player owns the piece,
                 otherwise False
     """
+
     def comp(p):
         return piece.owner == turn
+
     return comp(piece)
 
 
