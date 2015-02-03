@@ -70,17 +70,16 @@ def checkSpecialMove(piece, player=1):
     :return:
     """
     if isHouse(piece):
-        return kalah.PL_ONE if player is kalah.PL_ONE else kalah.PL_TWO
+        return PL_ONE if player is PL_ONE else PL_TWO
     # check if the piece is a store, who owns it and if it has pieces across
     if isStore(piece):
         if isOwner(player, piece):
-            if checkAcross(piece):
+            if isStoreEmpty(piece.get_next()):
                 if isStoreEmpty(piece, True):
                     # transfer all seeds in the house and the house across to the
                     # players home who's turn it is
                     kalah.bulkTransfer(piece)
-                    return True
-    return False
+    return PL_ONE if player is PL_TWO else PL_TWO
 
 
 def checkAcross(piece):

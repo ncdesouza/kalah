@@ -1,5 +1,7 @@
 import unittest
 
+from kalah import toObject
+
 from logic import *
 
 

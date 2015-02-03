@@ -150,9 +150,9 @@ class Store(Property):
         nxt = self.get_next() if not destination else destination.get_next()
         nxt.put_seed(self.get_seed())
         if count == 1:
-            checkSpecialMove(nxt, turn)
-            return
-        self.move_seeds(nxt)
+            next_turn = checkSpecialMove(nxt, turn)
+            return PL_ONE if next_turn is PL_ONE else PL_TWO
+        return self.move_seeds(turn, nxt)
 
 
 class Seed():
