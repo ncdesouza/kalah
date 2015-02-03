@@ -49,7 +49,7 @@ def isStoreEmpty(store, was=False):
         def count(s):
             return s.count_seeds()
 
-        return count(s) == 0 if not was else 1
+        return 0 == count(s) if not was else 1
     return compare(store)
 
 
@@ -62,7 +62,7 @@ def whoWon():
     pass
 
 
-def checkSpecialMove(piece, turn=0):
+def checkSpecialMove(piece, player=1):
     """
     checkSpecialMove():
         This function checks whether the move qualifies
@@ -70,15 +70,17 @@ def checkSpecialMove(piece, turn=0):
     :return:
     """
     if isHouse(piece):
-        return kalah.PL_ONE if turn is kalah.PL_ONE else kalah.PL_TWO
+        return kalah.PL_ONE if player is kalah.PL_ONE else kalah.PL_TWO
     # check if the piece is a store, who owns it and if it has pieces across
     if isStore(piece):
-        if isOwner(turn, piece):
+        if isOwner(player, piece):
             if checkAcross(piece):
                 if isStoreEmpty(piece, True):
                     # transfer all seeds in the house and the house across to the
                     # players home who's turn it is
                     kalah.bulkTransfer(piece)
+                    return True
+    return False
 
 
 def checkAcross(piece):

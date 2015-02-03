@@ -1,7 +1,7 @@
 import pygame
 
-from kalah import *
 from settings import *
+from logic import *
 
 
 class Board:
@@ -21,12 +21,21 @@ class Board:
                                       new_x, BOARDER_SIZE + interval)
                 self.board[i + ((6 - i) * 2)] = Store(num_seeds, PL_TWO,
                                                       new_x, BOARDER_SIZE)
-        for i in range(6):
-            store1 = self.board[i]
-            store2 = self.board[i + ((6 - i) * 2)]
-            store1.set_across(store2)
-            store1.set_home(self.board[6])
-            store2.set_across(store1)
+        for i in range(7):
+            if i < 6:
+                store1 = self.board[i]
+                store2 = self.board[i + ((6 - i) * 2)]
+                store1.set_across(store2)
+                store1.set_home(self.board[6])
+                store1.set_next(self.board[i + 1])
+                store2.set_across(store1)
+                store2.set_home(self.board[13])
+                store2.set_next(self.board[1 + (i + ((6 - i) * 2))])
+            else:
+                home1 = self.board[i]
+                home2 = self.board[13]
+                home1.set_next(self.board[i + 1])
+                home2.set_next(self.board[0])
 
     def draw_board(self, screen):
         for i in range(len(self.board)):
@@ -136,12 +145,14 @@ class Store(Property):
     def get_seed(self):
         return self.seeds.pop()
 
-    def move_seeds(self, destination=None, count=None):
-        if count == 1:
-            pass
-        nxt = self.get_next() if not destination else destination
+    def move_seeds(self, turn, destination=False):
+        count = self.count_seeds()
+        nxt = self.get_next() if not destination else destination.get_next()
         nxt.put_seed(self.get_seed())
-        self.move_seeds(nxt, self.count_seeds())
+        if count == 1:
+            checkSpecialMove(nxt, turn)
+            return
+        self.move_seeds(nxt)
 
 
 class Seed():
