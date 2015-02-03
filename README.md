@@ -1,2 +1,19 @@
 # kalah
-Kalah - Kalah, also called Kalaha or Mancala, is a game in the mancala family invented by William Julius Champion Jr (USA) in 1940. SOFE 3720: Artificial Intelligence
+Kalah - OFE 3720: Artificial Intelligence
+
+
+The board is laid out as follows:
+
+ Player2
+ Keyboard:    1        2        3       4         5         6
+ /************************************************************||--------+
+ /       /        /        /        /        /        /        /        |
+ /       /   12   /   11   /   10   /    9   /    8   /    7   /        |
+ /       /        /        /        /        /        /        /        | 
+ /  13  |+========+========+========+========+========+=======+|    6   |
+ /       /        |        |        |        |        |        |        |    
+ /       /    0   |    1   |    2   |    3   |    4   |    5   |        |
+ /       /        |        |        |        |        |        |        |
+ *******++--------+--------+--------+--------+--------+--------+--------+
+ Keyboard:    1        2        3       4         5         6
+ Player 1
