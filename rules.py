@@ -45,7 +45,7 @@ def getAcross(piece):
     :param piece: The piece you wish to move from
     :return: An object of the piece across
     """
-    return piece.across
+    return piece.get_across
 
 
 def transfer(piece):
@@ -57,7 +57,7 @@ def transfer(piece):
     :return: None
     """
     def count(p):
-        return p.count_seeds()
+        return p.count()
     num_seeds = count(piece)
 
     def recurse(origin, dest=None, count=None):
@@ -81,33 +81,6 @@ def transfer(piece):
     return recurse(piece)
 
 
-def bulkTransfer(piece):
-    def house(o):
-        return o.home
 
-    def across(o):
-        return o.across
-
-    def count(o):
-        return o.count_seeds()
-
-    def transfer(o, dest=None):
-        d = o if dest is None else dest
-
-        def put(d):
-            def get(o):
-                return o.get_seed()
-
-            return house(d).put_seed(get(o))
-
-        return put(d)
-
-    c = count(piece)
-    for x in range(c):
-        transfer(piece)
-
-    c = count(across(piece))
-    for x in range(c):
-        transfer(across(piece), piece)
 
 

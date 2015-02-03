@@ -38,7 +38,7 @@ STORE7_POS = (600, 0)
 
 SEED_RADIUS = 5
 
-BOARD_SIZE = (890, 230)
+BOARD_SIZE = (890, 250)
 BOARDER_SIZE = 10
 
 # Game settings

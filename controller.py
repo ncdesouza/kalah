@@ -8,12 +8,15 @@ from board import *
 class Kalah:
     def __init__(self, player_num):
         pygame.init()
-        self.screen = pygame.display.set_mode(kalah.BOARD_SIZE)
-        self.board = Board(kalah.NUM_SEEDS)
+        self.screen = pygame.display.set_mode(BOARD_SIZE)
+        self.board = Board(NUM_SEEDS)
         self.clock = pygame.time.Clock()
         self.count = 0
         self.turn = PL_ONE
         self.me = player_num
+
+        print("You are player:" + str(self.me))
+        print("Player " + str(self.turn) + "'s turn")
 
     def update(self):
         self.screen.fill(0)
@@ -53,9 +56,8 @@ class Kalah:
                     if self.me is PL_TWO and not isStoreEmpty(self.board.board[7]):
                         self.turn = self.board.board[7].move_seeds(PL_TWO)
                 self.me = self.turn
-                print(self.turn)
-
-
+                print("Player " + str(self.turn) + "'s turn")
+                print("Actual:" + str(self.me))
 
         self.board.draw_board(self.screen)
 

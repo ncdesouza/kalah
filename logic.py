@@ -1,5 +1,4 @@
-from kalah import *
-import kalah
+from board import *
 
 
 def isGameOver(board):
@@ -11,7 +10,10 @@ def isGameOver(board):
     :return: True if the game is over,
                 otherwise False
     """
-    pass
+    if areStoresEmpty(board):
+        return (board.piece(0)).bulk_transfer(True)
+    else:
+        return False
 
 
 def areStoresEmpty(board, pl1=None, pl2=None, p1_empty=True, p2_empty=True):
@@ -24,16 +26,19 @@ def areStoresEmpty(board, pl1=None, pl2=None, p1_empty=True, p2_empty=True):
                 are empty, otherwise False
     """
     if pl1 is None and pl2 is None:
-        pl1 = kalah.toObject(0, board)
-        pl2 = kalah.toObject(7, board)
+        pl1 = board.piece(0)
+        pl2 = board.piece(7)
+
+    p1_empty = p1_empty if not p1_empty else isStoreEmpty(pl1)
+    p2_empty = p2_empty if not p2_empty else isStoreEmpty(pl2)
 
     if isHouse(pl1) or isHouse(pl2):
         return True
 
     if p1_empty or p2_empty:
-            return areStoresEmpty(board, kalah.getNext(pl1),
-                                  kalah.getNext(pl2), kalah.isStoreEmpty(pl1),
-                                  kalah.isStoreEmpty(pl2))
+        return areStoresEmpty(board, pl1.get_next(),
+                              pl2.get_next(), p1_empty,
+                              p2_empty)
     else:
         return False
 
@@ -47,7 +52,7 @@ def isStoreEmpty(store, was=False):
     """
     def compare(s):
         def count(s):
-            return s.count_seeds()
+            return s.count()
 
         return count(s) == (0 if not was else 1)
     return compare(store)
@@ -80,25 +85,9 @@ def checkSpecialMove(piece, player=1):
                 if isStoreEmpty(piece, True):
                     # transfer all seeds in the house and the house across to the
                     # players home who's turn it is
-                    kalah.bulkTransfer(piece)
+                    piece.bulk_transfer()
     return PL_ONE if player is PL_TWO else PL_TWO
 
-
-def checkAcross(piece):
-    """
-    checkAdjacent(piece):
-        checks if the piece across from it has
-        any seeds in it
-
-    :param piece: The store across from
-    :return: True if the piece has seeds,
-                otherwise False
-    """
-    def check(p):
-        def count(p):
-            return kalah.getAcross(p).count_seeds()
-        return True if count(p) > 0 else False
-    return check(piece)
 
 
 
@@ -124,9 +113,8 @@ def isHouse(piece):
     :return: True if the piece is a home,
                 otherwise False
     """
-    def comp(p):
-        return piece.type == kalah.HOUSE
-    return True if comp(piece) else False
+
+    return True if piece.get_type() == HOUSE else False
 
 
 def isStore(piece):
@@ -137,4 +125,4 @@ def isStore(piece):
     :return: True if the piece is a store,
                 otherwise False
     """
-    return True if piece.type == kalah.STORE else False
+    return True if piece.get_type() == STORE else False
