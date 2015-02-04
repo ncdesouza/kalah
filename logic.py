@@ -28,8 +28,8 @@ def areStoresEmpty(board, pl1=None, pl2=None, p1_empty=True, p2_empty=True):
         pl1 = board.piece(0)
         pl2 = board.piece(7)
 
-    p1_empty = p1_empty if not p1_empty else isStoreEmpty(pl1)
-    p2_empty = p2_empty if not p2_empty else isStoreEmpty(pl2)
+    p1_empty = p1_empty if not p1_empty else isEmpty(pl1)
+    p2_empty = p2_empty if not p2_empty else isEmpty(pl2)
 
     if isHouse(pl1) or isHouse(pl2):
         return True
@@ -42,7 +42,7 @@ def areStoresEmpty(board, pl1=None, pl2=None, p1_empty=True, p2_empty=True):
         return False
 
 
-def isStoreEmpty(store, was=False):
+def isEmpty(store, was=False):
     """
     isStoreEmpty():
         checks if a single store is empty
@@ -80,10 +80,10 @@ def checkSpecialMove(piece, player=1):
     # check if the piece is a store, who owns it and if it has pieces across
     if isStore(piece):
         if isOwner(player, piece):
-            test = isStoreEmpty(piece.get_across())
-            if not isStoreEmpty(piece.get_across()):
-                test = isStoreEmpty(piece, True)
-                if isStoreEmpty(piece, True):
+            test = isEmpty(piece.get_across())
+            if not isEmpty(piece.get_across()):
+                test = isEmpty(piece, True)
+                if isEmpty(piece, True):
                     # transfer all seeds in the house and the house across to the
                     # players home who's turn it is
                     piece.bulk_transfer()

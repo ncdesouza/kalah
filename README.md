@@ -13,11 +13,12 @@ Requirements:
 
 ##1.  python 2.7
 
-### [where to download]
+### [https://www.python.org/downloads/release/python-279/]
   
 ##2.  pygame
   
-#### [where to download]
+#### unix:
+
 
 
 ---

@@ -9,16 +9,16 @@ class Board:
         interval = (BOARDER_SIZE + HOUSE_WIDTH)
         for i in range(7):
             if i is 6:
-                self.board[i] = House(PL_ONE,
+                self.board[i] = House(i, PL_ONE,
                                       ((i * interval) + interval + BOARDER_SIZE),
                                       BOARDER_SIZE)
 
-                self.board[13] = House(PL_TWO, BOARDER_SIZE, BOARDER_SIZE)
+                self.board[13] = House(13, PL_TWO, BOARDER_SIZE, BOARDER_SIZE)
             else:
                 new_x = (interval + (i * interval) + BOARDER_SIZE)
-                self.board[i] = Store(num_seeds, PL_ONE,
+                self.board[i] = Store(i, num_seeds, PL_ONE,
                                       new_x, BOARDER_SIZE + interval)
-                self.board[i + ((6 - i) * 2)] = Store(num_seeds, PL_TWO,
+                self.board[i + ((6 - i) * 2)] = Store(i, num_seeds, PL_TWO,
                                                       new_x, BOARDER_SIZE)
         for i in range(7):
             if i < 6:
@@ -62,7 +62,8 @@ class Board:
 
 
 class Property:
-    def __init__(self, isa, owner, width, height, x, y):
+    def __init__(self, name, isa, owner, width, height, x, y):
+        self.name = name
         self.width = width
         self.height = height
         self.x = x
@@ -75,13 +76,13 @@ class Property:
         self.seeds = []
 
     def get_rect(self):
-        def get_size():
-            return self.width, self.height
+        return self.get_pos(), self.get_size()
 
-        def get_pos():
-            return self.x, self.y
+    def get_size(self):
+        return self.width, self.height
 
-        return get_pos(), get_size()
+    def get_pos(self):
+        return self.x, self.y
 
     def set_position(self, (x, y)):
         self.position = (x, y)
@@ -139,16 +140,16 @@ class Property:
 
 
 class House(Property):
-    def __init__(self, owner, x, y):
-        Property.__init__(self, HOUSE, owner, HOUSE_WIDTH, HOUSE_HEIGHT, x, y)
+    def __init__(self, name, owner, x, y):
+        Property.__init__(self, name, HOUSE, owner, HOUSE_WIDTH, HOUSE_HEIGHT, x, y)
 
     def bullk_transfer(self, game_over=True):
         return True
 
 
 class Store(Property):
-    def __init__(self, num_seeds, owner, x, y):
-        Property.__init__(self, STORE, owner, STORE_WIDTH, STORE_HEIGHT, x, y)
+    def __init__(self, name, num_seeds, owner, x, y):
+        Property.__init__(self, name, STORE, owner, STORE_WIDTH, STORE_HEIGHT, x, y)
         self.home = None
         self.across = None
         self.seeds = [Seed(self)] * num_seeds
@@ -169,6 +170,9 @@ class Store(Property):
         return self.seeds.pop()
 
     def move_seeds(self, player, destination=False):
+        if isEmpty(self) and isOwner(player, self) and isStore(self):
+            print("Invalid Move: Player " + str(player) + "'s store " + str(self.name) + " is empty. Try again")
+            return PL_ONE if player is PL_ONE else PL_TWO
         count = self.count()
         nxt = self.get_next() if not destination else destination.get_next()
         if isHouse(nxt) and not isOwner(player, nxt):
@@ -203,13 +207,13 @@ class Store(Property):
         else:
             # If the across piece is not empty,
             # transfer all pieces to its home
-            if not isStoreEmpty(self.get_across()):
+            if not isEmpty(self.get_across()):
                 for x in range((self.get_across()).count()):
                     transfer(self.get_across())
 
             # If the piece is not empty,
             # transfer all pieces to its home
-            if not isStoreEmpty(self):
+            if not isEmpty(self):
                 for x in range(self.count()):
                     transfer(self)
 
