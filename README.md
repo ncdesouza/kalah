@@ -11,13 +11,11 @@ SOFE 3720: Artificial Intelligence
 Requirements:
 -------------
 
-##1.  python 2.7
-
-### [where to download]
+1.  python 2.7.9
+###  [where to download]
   
-##2.  pygame
-  
-#### [where to download]
+2.  pygame
+###   [where to download]
 
 
 ---
