@@ -12,10 +12,10 @@ Requirements:
 -------------
 
 1.  python 2.7.9
-###  [where to download]
+  [where to download]
   
 2.  pygame
-###   [where to download]
+  [where to download]
 
 
 ---
@@ -25,11 +25,11 @@ Setup:
 ------
 
 1. In console type:
-###`python setup.py install`
+  `python setup.py install`
 
 
 2. Then run the controller:
-###  `python `
+  `python `
 
 
 
