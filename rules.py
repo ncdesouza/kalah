@@ -1,6 +1,3 @@
-from kalah import *
-
-
 def calcAcross(index):
     def multi(i):
         def under(i):

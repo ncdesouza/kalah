@@ -1,3 +1,5 @@
+import pygame
+
 from logic import *
 
 
@@ -130,11 +132,10 @@ class Property:
         font = pygame.font.Font(None, 25)
         # for x in range(1, 7):
         # labels = font.render("{0}".format(x), True, WHITE)
-        #     screen.blit(labels, center(labels, True))
+        # screen.blit(labels, center(labels, True))
 
         text = font.render("{0}".format(self.count()), True, WHITE)
         screen.blit(text, center(text))
-
 
 
 class House(Property):

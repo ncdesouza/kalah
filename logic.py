@@ -1,5 +1,4 @@
-from board import *
-
+from settings import *
 
 def isGameOver(board):
     """

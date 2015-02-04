@@ -1,9 +1,9 @@
 import sys
-import pygame
 
 from pygame.constants import QUIT
 
-from kalah import *
+from board import *
+from settings import *
 
 
 class Kalah:
@@ -56,9 +56,10 @@ class Kalah:
                         self.turn = self.board.board[5].move_seeds(PL_ONE)
                     if self.me is PL_TWO and not isStoreEmpty(self.board.board[7]):
                         self.turn = self.board.board[7].move_seeds(PL_TWO)
-                self.me = self.turn
-                print("Player " + str(self.turn) + "'s turn")
-                print("Actual:" + str(self.me))
+
+            self.me = self.turn
+            print("Player " + str(self.turn) + "'s turn")
+            print("Actual:" + str(self.me))
         isGameOver(self.board)
         self.board.draw_board(self.screen)
 
