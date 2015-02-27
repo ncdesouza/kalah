@@ -17,8 +17,7 @@ Requirements:
   
 ##2.  pygame
   
-#### unix:
-
+#### [where to download]
 
 
 ---
